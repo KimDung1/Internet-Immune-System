@@ -1,0 +1,46 @@
+# 🌐 REST & REALTIME API DESIGN RULES
+# Base URL: https://api.immune-system.vn/v1
+# Specification: OpenAPI 3.1 Standard
+
+[versioning_and_naming]
+version_strategy = "URI path segment (/v1/)"
+resource_naming = "kebab-case for paths, camelCase for JSON properties"
+pluralization = "Plural nouns for resources (/scans, /reports, /users)"
+
+[headers_standard]
+required_request_headers = [
+  "Authorization: Bearer <Firebase_ID_Token>",
+  "Content-Type: application/json"
+]
+optional_request_headers = [
+  "X-Request-ID: <uuid-v4>",
+  "Accept-Language: vi|en"
+]
+required_response_headers = [
+  "Content-Type: application/json; charset=utf-8",
+  "X-Request-ID: <uuid-v4>",
+  "X-Processing-Time-Ms: <integer>"
+]
+
+[response_envelope]
+mandatory_structure = "{ status: 'success' | 'error', data: object | null, error: ErrorObject | null, meta: MetaObject }"
+meta_fields = ["requestId", "timestamp", "processingMs"]
+
+[http_status_codes]
+200_ok = "Successful GET, PUT, PATCH, or execute operation"
+201_created = "Successful POST resulting in resource creation"
+400_bad_request = "Validation failure or malformed payload"
+401_unauthorized = "Missing, invalid, or expired JWT token"
+403_forbidden = "Valid JWT token but insufficient permissions for resource"
+404_not_found = "Resource specified by ID does not exist"
+413_payload_too_large = "Input content exceeds 4000 character limit"
+422_unprocessable = "Content blocked by AI safety guardrails"
+429_too_many_requests = "Rate limit threshold breached"
+504_gateway_timeout = "Gemini API inference timeout (>10s)"
+500_internal_server_error = "Uncaught exception or infrastructure failure"
+
+[websocket_protocol]
+endpoint = "wss://api.immune-system.vn/v1/ws/scan"
+auth = "Query parameter ?token=<Firebase_ID_Token>"
+event_names = ["connected", "scan", "progress", "result", "error"]
+ping_interval_seconds = 30

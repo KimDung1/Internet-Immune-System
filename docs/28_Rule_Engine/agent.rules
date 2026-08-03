@@ -1,0 +1,39 @@
+# 🧩 MULTI-AGENT SYSTEM & ORCHESTRATION RULES
+# Agent Framework: Google ADK / Node.js Agent Network
+# Source: docs/10_Agent/AgentArchitecture.md
+
+[agent_roles]
+coordinator = "Routes, orchestrates, enforces hard timeouts, aggregates results"
+threat_detection = "Fast threat classification (Gemini 2.5 Flash + Threat Intel Cache)"
+reasoning = "Deep explanation generator (Gemini 2.5 Pro)"
+simulation = "Consequence timeline generator (Gemini 2.5 Pro)"
+recommendation = "Personalized action advisor (Gemini 2.5 Pro)"
+memory = "Stateful user context & Trust Score manager (Pure TS Service)"
+community = "Spam filter & community threat evaluator (Gemini 2.5 Flash)"
+
+[coordination_and_routing]
+hard_timeout_ms = 10000
+auto_trigger_simulation_threshold = 70
+auto_block_threshold = 85
+max_agent_hop_count = 5
+
+[lookup_hierarchy_threat_detection]
+tier_1 = "In-Memory Scan Cache (sha256 hash match, 1h TTL) -> Instant"
+tier_2 = "Threat Intelligence Firestore (sha256 doc ID get) -> <50ms"
+tier_3 = "Gemini 2.5 Flash AI inference -> ~1800ms"
+
+[retry_and_resilience]
+detect_agent_max_retries = 3
+pro_agents_max_retries = 2
+backoff_base_delay_ms = 500
+backoff_factor = 2
+retry_on_errors = ["GEMINI_TIMEOUT", "GOOGLE_API_UNAVAILABLE", "JSON_PARSE_ERROR"]
+no_retry_on_errors = ["GEMINI_SAFETY_BLOCK", "INVALID_INPUT"]
+fallback_mandatory_for_all_agents = true
+
+[trust_score_engine]
+min_score = 0
+max_score = 100
+max_delta_per_operation = 10
+antibody_levels = 10
+level_up_notifications_enabled = true

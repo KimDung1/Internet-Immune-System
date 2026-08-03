@@ -1,0 +1,40 @@
+# 💎 DESIGN SYSTEM & VISUAL GUIDELINES RULES
+# Theme: "AI System Alive" — Google I/O + Apple WWDC + Material 3 Expressive + Glassmorphism
+# Compliance Level: Enterprise / Series A Startup Benchmark
+
+[visual_philosophy]
+tagline = "Your AI Immune System for the Internet"
+metaphor = "Biological Defense & Cybernetic Orb"
+vibe = "JARVIS Meets Clinical Precision Meets Futuristic HUD"
+banned_styles = ["Generic Bootstrap", "Plain Antivirus Dashboard", "Flat Boredom", "Default Tailwind Colors"]
+
+[color_system]
+bg_dark_base = "#0B0F19"
+bg_card_glass = "rgba(15, 23, 42, 0.65)"
+primary_immune_teal = "#06B6D4"
+secondary_cyan_pulse = "#22D3EE"
+accent_violet_glow = "#8B5CF6"
+threat_critical_crimson = "#EF4444"
+warning_amber_glow = "#F59E0B"
+safe_emerald_shield = "#10B981"
+
+[typography_system]
+font_sans = "Inter, system-ui, sans-serif"
+font_display = "Outfit, sans-serif"
+font_mono = "JetBrains Mono, monospace"
+line_height_tight = 1.2
+line_height_normal = 1.5
+
+[glassmorphism_elevation]
+card_border = "1px solid rgba(255, 255, 255, 0.08)"
+card_shadow = "0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+card_backdrop_filter = "blur(12px) saturate(180%)"
+glow_effect = "0 0 25px rgba(6, 182, 212, 0.25)"
+
+[layout_grid]
+desktop_columns = 12
+tablet_columns = 8
+mobile_columns = 4
+gutter_px = 24
+margin_px = 24
+container_max_width_px = 1280

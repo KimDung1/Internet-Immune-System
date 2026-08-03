@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --iis-bg-dark: #0B0F19;
+  --iis-teal-primary: #06B6D4;
+  --iis-cyan-pulse: #22D3EE;
+  --iis-threat-crimson: #EF4444;
+}
+
+body {
+  background-color: var(--iis-bg-dark);
+  color: #F8FAFC;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}

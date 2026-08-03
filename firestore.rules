@@ -1,0 +1,95 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthed() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthed() && request.auth.uid == userId;
+    }
+
+    function isValidString(field, maxLen) {
+      return field is string && field.size() > 0 && field.size() <= maxLen;
+    }
+
+    function inRange(n, min, max) {
+      return n is number && n >= min && n <= max;
+    }
+
+    function immutableField(field) {
+      return !(field in request.resource.data.diff(resource.data).affectedKeys());
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && isValidString(request.resource.data.email, 255)
+        && isValidString(request.resource.data.display_name, 100)
+        && inRange(request.resource.data.trust_score, 0, 100);
+      allow update: if isOwner(userId)
+        && immutableField('uid')
+        && immutableField('email')
+        && immutableField('created_at');
+      allow delete: if false;
+    }
+
+    // Scan Results (Immutable Audit Trail)
+    match /scan_results/{scanId} {
+      allow read: if isAuthed() && isOwner(resource.data.uid);
+      allow create: if isAuthed()
+        && request.resource.data.uid == request.auth.uid
+        && isValidString(request.resource.data.input_value, 4000)
+        && inRange(request.resource.data.risk_score, 0, 100);
+      allow update, delete: if false;
+    }
+
+    // Simulations (Admin SDK created)
+    match /simulations/{simulationId} {
+      allow read: if isAuthed() && isOwner(resource.data.uid);
+      allow create, update, delete: if false;
+    }
+
+    // Training Sessions
+    match /training_sessions/{sessionId} {
+      allow read: if isAuthed() && isOwner(resource.data.uid);
+      allow create: if isAuthed()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'pending';
+      allow update: if isAuthed()
+        && isOwner(resource.data.uid)
+        && resource.data.status == 'pending';
+      allow delete: if false;
+    }
+
+    // Threat Intelligence (Public Read, Admin Write)
+    match /threat_intelligence/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Fraud Reports (Auth Create)
+    match /fraud_reports/{reportId} {
+      allow read: if false;
+      allow create: if isAuthed()
+        && request.resource.data.uid == request.auth.uid
+        && isValidString(request.resource.data.description, 500);
+      allow update, delete: if false;
+    }
+
+    // Notifications
+    match /notifications/{notifId} {
+      allow read: if isAuthed() && isOwner(resource.data.uid);
+      allow create: if false;
+      allow update: if isAuthed() && isOwner(resource.data.uid);
+      allow delete: if false;
+    }
+
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

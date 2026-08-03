@@ -1,0 +1,46 @@
+# 🎨 FRONTEND ARCHITECTURE & DEVELOPMENT RULES
+# Target Framework: Next.js 14 (App Router) + React 18 + Tailwind CSS + Framer Motion
+# Compliance Level: Enterprise Grade / Production Standard
+
+[general]
+strict_typescript = true
+target_ecma_version = "ES2022"
+enforce_component_purity = true
+
+[component_architecture]
+preferred_router = "Next.js 14 App Router"
+component_pattern = "Server Components by Default, Client Components at Leaves"
+max_client_component_depth = 3
+export_style = "Named Exports Only"
+folder_structure = "Feature-driven (features/[feature_name]/{components,hooks,services,types})"
+
+[state_management]
+global_state_library = "Zustand"
+form_state_library = "React Hook Form + Zod"
+server_state_cache = "React Cache / TanStack Query v5"
+prop_drilling_limit = 2
+
+[styling_and_tokens]
+css_framework = "Tailwind CSS v3"
+design_system_source = "docs/06_Design_System/DesignTokens.md"
+glassmorphism_blur_class = "backdrop-blur-md bg-slate-900/60 border border-teal-500/20"
+dark_mode_strategy = "Class-based (forced dark theme for security HUD look)"
+
+[performance_budget]
+max_initial_bundle_kb = 120
+max_first_contentful_paint_ms = 1200
+max_largest_contentful_paint_ms = 2200
+image_optimization = "next/image mandatory with width/height/priority"
+code_splitting = "Dynamic import for heavy modals, charts, and 3D orbs"
+
+[accessibility_wcag_aa]
+minimum_contrast_ratio_normal = 4.5
+minimum_contrast_ratio_large = 3.0
+touch_target_minimum_px = 44
+reduced_motion_handling = "Framer Motion useReducedMotion() hook mandatory"
+focus_ring_class = "focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
+
+[error_boundaries]
+fallback_strategy = "Granular Error Boundaries per feature block"
+log_error_to_service = "Sentry"
+user_notification_style = "Toast alert with retry action button"
