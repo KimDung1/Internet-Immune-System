@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+    
+    match /scans/{scanId} {
+      // Allow authenticated users to create
+      allow create: if isAuthenticated();
+      // Allow reading own scans + public demo access
+      allow read: if isOwner(resource.data.userId) || true;
+      allow update, delete: if isOwner(resource.data.userId);
+    }
+    
+    match /community_reports/{reportId} {
+      allow create: if isAuthenticated();
+      allow read: if true;
+    }
+    
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

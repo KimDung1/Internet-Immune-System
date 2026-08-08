@@ -1,0 +1,6 @@
+{
+  "name": "Internet Immune System",
+  "description": "Hệ Miễn Dịch Internet - Nền tảng AI Experience đa tầng phòng ngự chống lừa đảo trực tuyến tại Việt Nam.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

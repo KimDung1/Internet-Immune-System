@@ -1,0 +1,35 @@
+# ⚙️ BACKEND ARCHITECTURE & SERVICE RULES
+# Target Runtime: Node.js 20 LTS + Hono.js on Google Cloud Run
+# Compliance Level: Enterprise Grade / Scalable Microservices
+
+[runtime_environment]
+framework = "Hono.js"
+runtime = "Node.js 20 LTS"
+container_base = "node:20-slim"
+port = 8080
+
+[api_standards]
+base_path = "/v1"
+response_envelope_format = "StandardEnvelope { status, data, error, meta }"
+payload_validation = "Zod schema validation middleware mandatory for every POST/PATCH"
+content_type = "application/json; charset=utf-8"
+request_id_header = "X-Request-ID"
+
+[error_handling]
+custom_error_class = "AppError"
+never_leak_stack_traces_in_prod = true
+default_error_code = "INTERNAL_ERROR"
+http_status_mapping = { UNAUTHORIZED = 401, FORBIDDEN = 403, NOT_FOUND = 404, INVALID_INPUT = 400, RATE_LIMITED = 429, GEMINI_TIMEOUT = 504, INTERNAL_ERROR = 500 }
+
+[resilience_and_rate_limiting]
+rate_limit_strategy = "Token Bucket per user via Memory/Redis"
+scan_analyze_limit = "30 req/min/user"
+training_sessions_limit = "10 sessions/day/user"
+circuit_breaker_enabled = true
+gemini_timeout_ms = 10000
+
+[logging_and_telemetry]
+format = "Structured JSON (Cloud Logging compatible)"
+required_fields = ["requestId", "timestamp", "userId", "path", "method", "latencyMs"]
+sensitive_data_redaction = ["authorization", "password", "token", "cccd", "otp"]
+log_level = "info"

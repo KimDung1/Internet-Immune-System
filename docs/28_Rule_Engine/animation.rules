@@ -1,0 +1,33 @@
+# 🎬 ANIMATION & MOTION DESIGN RULES
+# Animation Library: Framer Motion v11
+# Source: docs/05_UI/MotionDesign.md
+
+[motion_principles]
+design_language = "Framer Motion Spring Physics + Material Expressive"
+feeling = "AI is alive, breathing, and protecting in real-time"
+gpu_acceleration = "Animate ONLY transform (scale, translate3d) and opacity"
+banned_animated_properties = ["width", "height", "top", "left", "margin", "padding"]
+
+[timing_and_easing]
+duration_instant_ms = 150
+duration_fast_ms = 250
+duration_normal_ms = 400
+duration_slow_ms = 700
+easing_expressive = [0.2, 0.0, 0.0, 1.0]   # Material Expressive Easing
+easing_decelerate = [0.0, 0.0, 0.2, 1.0]
+spring_stiffness_responsive = 300
+spring_damping_responsive = 25
+spring_stiffness_gentle = 120
+spring_damping_gentle = 14
+
+[component_animations]
+ai_orb_pulse_duration_seconds = 4
+ai_orb_scan_rotation_seconds = 8
+threat_card_stagger_delay_ms = 80
+timeline_step_stagger_ms = 1500
+heatmap_cell_stagger_ms = 4
+
+[accessibility_reduced_motion]
+prefers_reduced_motion_handling = "Mandatory useReducedMotion() hook in all animated components"
+reduced_motion_fallback = "Opacity fade only (0ms duration transform)"
+screen_reader_live_region = "aria-live='assertive' for critical threats"

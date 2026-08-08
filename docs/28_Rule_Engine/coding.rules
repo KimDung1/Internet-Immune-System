@@ -1,0 +1,45 @@
+# 💻 CODING STANDARDS & CONVENTIONS RULES
+# Language: TypeScript 5.x Strict Mode
+# Source: docs/26_Engineering_Standards/CodingConventions.md
+
+[typescript_strictness]
+no_implicit_any = true
+strict_null_checks = true
+strict_function_types = true
+no_unused_locals = true
+no_unused_parameters = true
+exact_optional_property_types = true
+no_explicit_any = true   # Use unknown or generic T instead
+
+[naming_conventions]
+react_components = "PascalCase (e.g. ThreatCard.tsx)"
+hooks = "camelCase with 'use' prefix (e.g. useImmunityScore.ts)"
+services_and_utils = "camelCase (e.g. threatDetectionService.ts)"
+types_and_interfaces = "PascalCase with 'T' or 'I' prefix avoided (e.g. ScanResult)"
+constants = "SCREAMING_SNAKE_CASE (e.g. MAX_INPUT_LENGTH)"
+css_variables = "kebab-case with '--iis-' prefix (e.g. --iis-teal-primary)"
+
+[code_quality_and_tooling]
+formatter = "Prettier (tabWidth: 2, semi: false, singleQuote: true)"
+linter = "ESLint with typescript-eslint strict config"
+git_hooks = "Husky + lint-staged (typecheck + format on pre-commit)"
+imports_order = [
+  "react / next core modules",
+  "external packages (lucide-react, framer-motion, etc.)",
+  "internal monorepo packages (@iis/ui, @iis/core)",
+  "relative imports (./components, ./hooks)",
+  "types and interfaces"
+]
+
+[git_and_commit_convention]
+commit_format = "Conventional Commits (type(scope): description)"
+allowed_commit_types = ["feat", "fix", "docs", "style", "refactor", "perf", "test", "chore", "sec"]
+branch_naming = "type/issue-id-short-description (e.g. feat/TASK-01-monorepo-setup)"
+commit_signature_required = true
+
+[definition_of_done]
+unit_tests_pass = true
+typecheck_pass = true
+lint_pass = true
+no_console_log_in_prod = true
+documentation_updated = true

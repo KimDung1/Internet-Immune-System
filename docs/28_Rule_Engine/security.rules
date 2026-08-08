@@ -1,0 +1,44 @@
+# 🛡️ ENTERPRISE SECURITY & PRIVACY RULES
+# Compliance Target: Vietnam Cybersecurity Law 2018 + GDPR Principles + Google API Policies
+# Threat Model: STRIDE Defense-in-Depth
+
+[authentication_and_identity]
+jwt_provider = "Firebase Auth"
+jwt_algorithm = "RS256"
+token_expiration_seconds = 3600
+enforce_bearer_token = true
+revoke_refresh_token_on_logout = true
+
+[pii_and_data_privacy]
+pii_scrubbing_mandatory_before_ai = true
+pii_patterns_to_redact = [
+  "CCCD/CMND (9-12 digits)",
+  "Vietnamese Phone Numbers (0x+9digits)",
+  "Email Addresses",
+  "Credit/Debit Card Numbers (16 digits)",
+  "Bank Account Numbers (8-16 digits)"
+]
+data_retention_scan_results_days = 90
+data_retention_simulations_days = 90
+data_retention_fraud_reports_years = 2
+right_to_erasure_supported = true
+
+[browser_extension_security]
+manifest_version = 3
+csp_policy = "script-src 'self'; object-src 'none';"
+cors_allowed_origins = ["https://*.immune-system.vn"]
+storage_encrypted = true
+permissions_requested = ["storage", "activeTab", "declarativeNetRequest", "webNavigation"]
+banned_permissions = ["<all_urls>", "debugger", "downloads"]
+
+[input_sanitization]
+max_input_length_chars = 4000
+strip_html_tags_before_ai = true
+url_validation_strict = true
+reject_malformed_urls = true
+
+[audit_and_compliance]
+immutable_scan_records = true
+log_security_events = true
+audit_trail_retention_days = 365
+penetration_testing_frequency = "Bi-annual"
